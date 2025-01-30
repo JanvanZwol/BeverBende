@@ -1,15 +1,16 @@
 from deck import *
 from cards import *
 from player import *
+from strategies import *
 
 class Game():
-    def __init__(self, num_players):
+    def __init__(self, strategies):
         self.deck = Deck()
-        self.num_players = num_players
+        self.num_players = len(strategies)
         
         self.players = list()
-        for ii in range(num_players):
-            self.players.append(Human_Player(self.deck))
+        for ii in range(self.num_players):
+            self.players.append(Player(self.deck, strategies[ii]))
 
     def check_game_end(self, next_player):
         deck_depleted = self.deck.deck_pointer == len(self.deck.draw_pile)
@@ -25,7 +26,7 @@ class Game():
                 print(f"Player {player_turn}'s turn")
 
             #Check first descision
-            first_decision = current_player.first_decision_strategy()
+            first_decision = current_player.strategy.first_decision(current_player)
                 
             if verbose:
                 print(f"picks {first_decision}")
@@ -33,12 +34,12 @@ class Game():
             #resolve second descision
             if first_decision == "A":
                 card_in_hand = self.deck.show_top_discard()
-                second_decision = current_player.second_decision_A_strategy(card_in_hand)
+                second_decision = current_player.strategy.second_decision_A(current_player, card_in_hand)
                 current_player.replace_card(second_decision, card_in_hand)
 
             elif first_decision == "B":
                 card_in_hand = self.deck.draw_top_deck()
-                second_decision = current_player.second_decision_B_strategy(card_in_hand)
+                second_decision = current_player.strategy.second_decision_B(current_player, card_in_hand)
                 if second_decision == 4:
                     self.deck.discard_card(card_in_hand)
                 else:
@@ -48,7 +49,7 @@ class Game():
                 print(f"picks {second_decision}")
 
             #Check whether to stop
-            stop_decision = current_player.stop_decision_strategy()
+            stop_decision = current_player.strategy.stop_decision(current_player)
             current_player.stop = stop_decision
 
             if verbose and stop_decision:
@@ -68,4 +69,4 @@ class Game():
                 print(f"Players {ii} has {self.players[ii].score} points")
             print(f"Player {lowest_player} won")
 
-Game(2).play()
+Game([Human_interface(), Naive_strategy()]).play()

@@ -2,10 +2,13 @@ from cards import *
 from deck import *
 
 class Player():
-    def __init__(self, deck):
+    def __init__(self, deck, strategy):
         self.deck = deck
         self.cards = deck.deal_cards()
         self.visible = [True, False, False, True]
+
+        self.strategy = strategy
+
         self.stop = False
 
     def cards_to_string(self):
@@ -28,61 +31,3 @@ class Player():
         self.score = 0
         for card in self.cards:
             self.score += card.points
-
-class Human_Player(Player):
-    def __init__(self, deck):
-        super().__init__(deck)
-
-    def first_decision_strategy(self):
-        help_statement = "draw discard or draw deck"
-        print(f"It's your turn\nYour cards are: {self.cards_to_string()}\nTop card on the discard pile is: {self.deck.show_top_discard()}")
-
-        while True:
-            inp = input("> ").lower()
-            if inp == "draw discard":
-                return "A"
-            elif inp == "draw deck":
-                return "B"
-            else:
-                print(help_statement)
-
-    def second_decision_A_strategy(self, card_in_hand):
-        help_statement = "0,1,2,3 to pick a card to replace"
-
-        while True:
-            print(f"You have an {str(card_in_hand)} in hand")
-            inp = input("> ").lower()
-
-            #Improvised case switch
-            if inp in "0123" and len(inp) == 1:
-                return int(inp)
-            else:
-                print(help_statement)
-
-    def second_decision_B_strategy(self, card_in_hand):
-        help_statement = "0,1,2,3 to pick a card to replace or 4 to discard"
-
-        while True:
-            print(f"You have an {str(card_in_hand)} in hand")
-            inp = input("> ").lower()
-
-            #Improvised case switch
-            if inp in "01234" and len(inp) == 1:
-                return int(inp)
-            else:
-                print(help_statement)
-
-    def stop_decision_strategy(self):
-        help_statement = "To Stop: stop or yes or y\nOtherwise: no or n)"
-
-        while True:
-            print(f"Do you want to stop?")
-            inp = input("> ").lower()
-
-            #Improvised case switch
-            if inp in ["stop", "yes", "y"]:
-                return True
-            elif inp in ["no", "n"]:
-                return False
-            else:
-                print(help_statement)

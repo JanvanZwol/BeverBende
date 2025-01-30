@@ -34,17 +34,12 @@ class Human_Player(Player):
         super().__init__(deck)
 
     def first_decision_strategy(self):
-        help_statement = "show cards\nshow discard\ndraw discard\ndraw deck"
+        help_statement = "draw discard or draw deck"
+        print(f"It's your turn\nYour cards are: {self.cards_to_string()}\nTop card on the discard pile is: {self.deck.show_top_discard()}")
 
         while True:
-            print("It's your turn")
             inp = input("> ").lower()
-
-            if inp == "show cards":
-                print(f"Your cards are: {self.cards_to_string()}")
-            elif inp == "show discard":
-                print(f"Top card on the discard pile is: {self.deck.show_top_discard()}")
-            elif inp == "draw discard":
+            if inp == "draw discard":
                 return "A"
             elif inp == "draw deck":
                 return "B"
@@ -52,52 +47,40 @@ class Human_Player(Player):
                 print(help_statement)
 
     def second_decision_A_strategy(self, card_in_hand):
-        help_statement = "show cards\nshow discard\n0,1,2,3 to pick a card to replace"
+        help_statement = "0,1,2,3 to pick a card to replace"
 
         while True:
             print(f"You have an {str(card_in_hand)} in hand")
             inp = input("> ").lower()
 
             #Improvised case switch
-            if inp == "show cards":
-                print(f"Your cards are: {self.cards_to_string()}")
-            elif inp == "show discard":
-                print(f"Top card on the discard pile is: {self.deck.show_top_discard()}")
-            elif inp in "0123" and len(inp) == 1:
+            if inp in "0123" and len(inp) == 1:
                 return int(inp)
             else:
                 print(help_statement)
 
     def second_decision_B_strategy(self, card_in_hand):
-        help_statement = "show cards\nshow discard\n0,1,2,3 to pick a card to replace\n4 to discard"
+        help_statement = "0,1,2,3 to pick a card to replace or 4 to discard"
 
         while True:
             print(f"You have an {str(card_in_hand)} in hand")
             inp = input("> ").lower()
 
             #Improvised case switch
-            if inp == "show cards":
-                print(f"Your cards are: {self.cards_to_string()}")
-            elif inp == "show discard":
-                print(f"Top card on the discard pile is: {self.deck.show_top_discard()}")
-            elif inp in "01234" and len(inp) == 1:
+            if inp in "01234" and len(inp) == 1:
                 return int(inp)
             else:
                 print(help_statement)
 
     def stop_decision_strategy(self):
-        help_statement = "show cards\nshow discard\nstop or yes or y\nno or n)"
+        help_statement = "To Stop: stop or yes or y\nOtherwise: no or n)"
 
         while True:
             print(f"Do you want to stop?")
             inp = input("> ").lower()
 
             #Improvised case switch
-            if inp == "show cards":
-                print(f"Your cards are: {self.cards_to_string()}")
-            elif inp == "show discard":
-                print(f"Top card on the discard pile is: {self.deck.show_top_discard()}")
-            elif inp in ["stop", "yes", "y"]:
+            if inp in ["stop", "yes", "y"]:
                 return True
             elif inp in ["no", "n"]:
                 return False

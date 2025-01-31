@@ -4,22 +4,22 @@ import random
 class Strategy():
     @staticmethod
     @abstractmethod
-    def first_decision(self, game_state):
+    def first_decision(game_state):
         pass
     
     @staticmethod
     @abstractmethod
-    def second_decision_A(self, game_state, card_in_hand):
+    def second_decision_A(game_state, card_in_hand):
         pass
     
     @staticmethod
     @abstractmethod
-    def second_decision_B(self, game_state, card_in_hand):
+    def second_decision_B(game_state, card_in_hand):
         pass
     
     @staticmethod
     @abstractmethod
-    def stop_decision(self, game_state):
+    def stop_decision(game_state):
         pass
 
 class Human_interface(Strategy):
@@ -31,9 +31,9 @@ class Human_interface(Strategy):
         while True:
             inp = input("> ").lower()
             if inp == "draw discard" or inp == "a":
-                return "A"
+                return 0
             elif inp == "draw deck" or inp == "b":
-                return "B"
+                return 1
             else:
                 print(help_statement)
 
@@ -83,8 +83,8 @@ class Human_interface(Strategy):
 
 class Naive_strategy(Strategy):
     @staticmethod
-    def first_decision(pgame_state):
-        return ["A", "B"][random.randint(0,1)]
+    def first_decision(game_state):
+        return random.randint(0,1)
     
     @staticmethod
     def second_decision_A(game_state, card_in_hand):
